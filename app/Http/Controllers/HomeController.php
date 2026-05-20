@@ -9,6 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        /*
         $featured = Product::with(['category', 'images' => fn($q) => $q->where('is_primary', 1)])
             ->where('status', 'Active')
             ->whereHas('variants', fn($q) => $q->where('stock_qty', '>', 0))
@@ -16,7 +17,11 @@ class HomeController extends Controller
             ->get();
 
         $categories = Category::all();
+        */
 
-        return view('home', compact('featured', 'categories'));
+        return view('home', [
+            'featured' => [],
+            'categories' => []
+        ]);
     }
 }
