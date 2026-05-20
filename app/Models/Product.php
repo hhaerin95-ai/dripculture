@@ -37,4 +37,9 @@ class Product extends Model
     {
         return 'product_id';
     }
+
+    public function isLowStock()
+    {
+        return $this->variants()->sum('stock_qty') <= 10;
+    }
 }
