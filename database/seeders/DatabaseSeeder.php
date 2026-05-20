@@ -9,11 +9,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // PostgreSQL way to disable foreign key checks
-        DB::statement('SET session_replication_role = replica;');
-        DB::table('products')->truncate();
-        DB::table('categories')->truncate();
-        DB::statement('SET session_replication_role = DEFAULT;');
+        // Delete in correct order (children first)
+        DB::table('products')->delete();
+        DB::table('categories')->delete();
 
         $tshirtId = DB::table('categories')->insertGetId([
             'category_name' => 'T-Shirts',
