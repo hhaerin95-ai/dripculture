@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libzip-dev \
+    libpq-dev \
     zip \
     npm
 
