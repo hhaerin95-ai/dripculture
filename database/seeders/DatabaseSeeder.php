@@ -9,24 +9,24 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // truncate resets auto-increment, delete() does not
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('products')->truncate();
         DB::table('categories')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // categories — capture inserted IDs
+        // Pass 'category_id' as the second argument to insertGetId
         $tshirtId = DB::table('categories')->insertGetId([
             'category_name' => 'T-Shirts',
             'description'   => 'Streetwear tees',
             'created_at'    => now(),
-        ]);
+        ], 'category_id');  // <-- tell Laravel the PK name
 
         $hoodieId = DB::table('categories')->insertGetId([
             'category_name' => 'Hoodies',
             'description'   => 'Oversized hoodies',
             'created_at'    => now(),
-        ]);
+        ], 'category_id');  // <-- same here
 
-        // products — use real IDs, not hardcoded 1 & 2
         DB::table('products')->insert([
             [
                 'category_id'  => $tshirtId,
