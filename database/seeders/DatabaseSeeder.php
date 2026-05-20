@@ -87,17 +87,13 @@ class DatabaseSeeder extends Seeder
 
         // users
         DB::table('users')->insert([
-            [
-                'role_id' => 1,
-                'name' => 'Admin',
-                'full_name' => 'Admin User',
-                'email' => 'admin@dripculture.my',
-                'password' => Hash::make('Admin123'),
-                'phone' => '0123456789',
-                'status' => 'Active',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+    [
+        'name' => 'Admin',
+        'email' => 'admin@dripculture.my',
+        'password' => Hash::make('Admin123'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ],
+]);
     }
 }
