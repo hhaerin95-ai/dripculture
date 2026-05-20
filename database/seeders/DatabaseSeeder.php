@@ -11,16 +11,19 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // RESET TABLES
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // CLEAR OLD DATA
+        DB::table('variants')->delete();
+        DB::table('products')->delete();
+        DB::table('categories')->delete();
+        DB::table('users')->delete();
+        DB::table('roles')->delete();
 
-        DB::table('variants')->truncate();
-        DB::table('products')->truncate();
-        DB::table('categories')->truncate();
-        DB::table('users')->truncate();
-        DB::table('roles')->truncate();
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // RESET AUTO INCREMENT (PostgreSQL)
+        DB::statement('ALTER SEQUENCE roles_role_id_seq RESTART WITH 1');
+        DB::statement('ALTER SEQUENCE categories_category_id_seq RESTART WITH 1');
+        DB::statement('ALTER SEQUENCE products_product_id_seq RESTART WITH 1');
+        DB::statement('ALTER SEQUENCE variants_variant_id_seq RESTART WITH 1');
+        DB::statement('ALTER SEQUENCE users_user_id_seq RESTART WITH 1');
 
         // ROLES
         DB::table('roles')->insert([
@@ -131,6 +134,7 @@ class DatabaseSeeder extends Seeder
         $variantId = 1;
 
         foreach ($variantData as $productId => $variants) {
+
             foreach ($variants as [$size, $colour, $extra]) {
 
                 DB::table('variants')->insert([
