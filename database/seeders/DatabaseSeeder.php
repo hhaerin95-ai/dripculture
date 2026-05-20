@@ -9,23 +9,23 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // PostgreSQL way to disable foreign key checks
+        DB::statement('SET session_replication_role = replica;');
         DB::table('products')->truncate();
         DB::table('categories')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET session_replication_role = DEFAULT;');
 
-        // Pass 'category_id' as the second argument to insertGetId
         $tshirtId = DB::table('categories')->insertGetId([
             'category_name' => 'T-Shirts',
             'description'   => 'Streetwear tees',
             'created_at'    => now(),
-        ], 'category_id');  // <-- tell Laravel the PK name
+        ], 'category_id');
 
         $hoodieId = DB::table('categories')->insertGetId([
             'category_name' => 'Hoodies',
             'description'   => 'Oversized hoodies',
             'created_at'    => now(),
-        ], 'category_id');  // <-- same here
+        ], 'category_id');
 
         DB::table('products')->insert([
             [
