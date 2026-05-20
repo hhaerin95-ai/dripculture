@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Collection;
+
 class HomeController extends Controller
 {
     public function index()
     {
-        return 'WEBSITE HIDUP';
+        $featured = collect();
+
+        return view('home', compact('featured'));
     }
 }
