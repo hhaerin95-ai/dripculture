@@ -11,6 +11,16 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('categories')->insert([
             'category_name' => 'T-Shirts'
+
         ]);
+        DB::table('products')->insert([
+    [
+        'category_id' => 1,
+        'product_name' => 'OG Tee',
+        'description' => 'Streetwear tee',
+        'base_price' => 89,
+        'status' => 'Active'
+    ]
+]);
     }
 }
