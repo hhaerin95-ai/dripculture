@@ -1,4 +1,3 @@
-```php
 <?php
 
 namespace Database\Seeders;
@@ -11,21 +10,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // CLEAR OLD DATA
+        // clear tables
         DB::table('variants')->delete();
         DB::table('products')->delete();
         DB::table('categories')->delete();
         DB::table('users')->delete();
         DB::table('roles')->delete();
 
-        // RESET AUTO INCREMENT (PostgreSQL)
-        DB::statement('ALTER SEQUENCE roles_role_id_seq RESTART WITH 1');
-        DB::statement('ALTER SEQUENCE categories_category_id_seq RESTART WITH 1');
-        DB::statement('ALTER SEQUENCE products_product_id_seq RESTART WITH 1');
-        DB::statement('ALTER SEQUENCE variants_variant_id_seq RESTART WITH 1');
-        DB::statement('ALTER SEQUENCE users_user_id_seq RESTART WITH 1');
-
-        // ROLES
+        // roles
         DB::table('roles')->insert([
             [
                 'role_id' => 1,
@@ -37,146 +29,81 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        // CATEGORIES
+        // categories
         DB::table('categories')->insert([
             [
+                'category_id' => 1,
                 'category_name' => 'T-Shirts',
-                'description' => 'Graphic and plain tees',
+                'description' => 'Graphic tees',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
+                'category_id' => 2,
                 'category_name' => 'Hoodies',
-                'description' => 'Oversized and zip-up hoodies',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_name' => 'Caps',
-                'description' => 'Snapbacks and dad caps',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_name' => 'Pants',
-                'description' => 'Track pants and denim',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_name' => 'Accessories',
-                'description' => 'Bags, beanies and more',
+                'description' => 'Street hoodies',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
 
-        // PRODUCTS
-        $products = [
+        // products
+        DB::table('products')->insert([
             [
+                'product_id' => 1,
                 'category_id' => 1,
-                'product_name' => 'OG Box Logo Tee',
-                'description' => 'Classic boxy fit with embroidered chest logo.',
-                'base_price' => 89.00,
+                'product_name' => 'OG Box Tee',
+                'description' => 'Streetwear tee',
+                'base_price' => 89,
                 'status' => 'Active',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'category_id' => 1,
-                'product_name' => 'Acid Wash Graphic Tee',
-                'description' => 'Washed distressed look with bold urban print.',
-                'base_price' => 75.00,
-                'status' => 'Active',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
+                'product_id' => 2,
                 'category_id' => 2,
-                'product_name' => 'Essential Oversized Hoodie',
-                'description' => 'Drop-shoulder hoodie in fleece cotton blend.',
-                'base_price' => 149.00,
+                'product_name' => 'Oversized Hoodie',
+                'description' => 'Black hoodie',
+                'base_price' => 149,
                 'status' => 'Active',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'category_id' => 2,
-                'product_name' => 'Zip-Up Tech Fleece',
-                'description' => 'Lightweight zip-up with kangaroo pocket.',
-                'base_price' => 169.00,
-                'status' => 'Active',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_id' => 3,
-                'product_name' => 'Snap-Back 6 Panel Cap',
-                'description' => 'Structured 6-panel with flat brim.',
-                'base_price' => 59.00,
-                'status' => 'Active',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ];
-
-        DB::table('products')->insert($products);
-
-        // VARIANTS
-        $variantData = [
-            1 => [['S', 'Black', 0], ['M', 'Black', 0], ['L', 'Black', 0]],
-            2 => [['S', 'Grey', 0], ['M', 'Grey', 0], ['L', 'Grey', 0]],
-            3 => [['S', 'Black', 0], ['M', 'Black', 0], ['L', 'Black', 0]],
-            4 => [['S', 'Black', 0], ['M', 'Black', 0], ['L', 'Navy', 5]],
-            5 => [['One Size', 'Black', 0], ['One Size', 'White', 0]],
-        ];
-
-        $variantId = 1;
-
-        foreach ($variantData as $productId => $variants) {
-
-            foreach ($variants as [$size, $colour, $extra]) {
-
-                DB::table('variants')->insert([
-                    'product_id' => $productId,
-                    'size' => $size,
-                    'colour' => $colour,
-                    'sku_code' => 'SKU-' . str_pad($variantId, 4, '0', STR_PAD_LEFT),
-                    'stock_qty' => rand(10, 50),
-                    'additional_price' => $extra,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-
-                $variantId++;
-            }
-        }
-
-        // ADMIN USER
-        DB::table('users')->insert([
-            'role_id' => 1,
-            'name' => 'Admin',
-            'full_name' => 'Admin User',
-            'email' => 'admin@dripculture.my',
-            'password' => Hash::make('Admin@1234'),
-            'phone' => '0123456789',
-            'status' => 'Active',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
-        // CUSTOMER USER
+        // variants
+        DB::table('variants')->insert([
+            [
+                'product_id' => 1,
+                'size' => 'M',
+                'colour' => 'Black',
+                'sku_code' => 'SKU001',
+                'stock_qty' => 10,
+                'additional_price' => 0,
+            ],
+            [
+                'product_id' => 2,
+                'size' => 'L',
+                'colour' => 'Black',
+                'sku_code' => 'SKU002',
+                'stock_qty' => 5,
+                'additional_price' => 0,
+            ],
+        ]);
+
+        // users
         DB::table('users')->insert([
-            'role_id' => 2,
-            'name' => 'Test Customer',
-            'full_name' => 'Test Customer',
-            'email' => 'customer@dripculture.my',
-            'password' => Hash::make('Customer@1234'),
-            'phone' => '0198765432',
-            'status' => 'Active',
-            'created_at' => now(),
-            'updated_at' => now(),
+            [
+                'role_id' => 1,
+                'name' => 'Admin',
+                'full_name' => 'Admin User',
+                'email' => 'admin@dripculture.my',
+                'password' => Hash::make('Admin123'),
+                'phone' => '0123456789',
+                'status' => 'Active',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
-```
