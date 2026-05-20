@@ -40,6 +40,6 @@ class Product extends Model
 
     public function isLowStock()
     {
-        return $this->variants()->sum('stock_qty') <= 10;
+        return $this->variants()->sum('stock_qty') <= 5;
     }
 }
