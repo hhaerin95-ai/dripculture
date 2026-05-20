@@ -18,12 +18,6 @@ RUN docker-php-ext-install zip pdo pdo_pgsql
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN composer install
-
-RUN mkdir -p storage/framework/sessions \
-    storage/framework/views \
-    storage/framework/cache \
-    bootstrap/cache
-
 RUN npm install
 RUN npm run build
 
