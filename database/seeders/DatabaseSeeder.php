@@ -20,11 +20,9 @@ class DatabaseSeeder extends Seeder
         // roles
         DB::table('roles')->insert([
             [
-                'role_id' => 1,
                 'role_name' => 'Admin',
             ],
             [
-                'role_id' => 2,
                 'role_name' => 'Customer',
             ],
         ]);
@@ -32,14 +30,12 @@ class DatabaseSeeder extends Seeder
         // categories
         DB::table('categories')->insert([
             [
-                'category_id' => 1,
                 'category_name' => 'T-Shirts',
                 'description' => 'Graphic tees',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'category_id' => 2,
                 'category_name' => 'Hoodies',
                 'description' => 'Street hoodies',
                 'created_at' => now(),
@@ -50,7 +46,6 @@ class DatabaseSeeder extends Seeder
         // products
         DB::table('products')->insert([
             [
-                'product_id' => 1,
                 'category_id' => 1,
                 'product_name' => 'OG Box Tee',
                 'description' => 'Streetwear tee',
@@ -60,7 +55,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'product_id' => 2,
                 'category_id' => 2,
                 'product_name' => 'Oversized Hoodie',
                 'description' => 'Black hoodie',
