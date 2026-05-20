@@ -1,5 +1,8 @@
 @extends('layouts.app')
-@php $pageTitle = $product->product_name @endphp
+@php 
+    $pageTitle = $product->product_name;
+    $totalStock = $product->variants->sum('stock_qty');
+@endphp
 @section('content')
 
 <div class="page-header">
@@ -50,16 +53,16 @@
                 <p style="color:var(--grey);font-size:0.9rem;line-height:1.7;margin-bottom:24px;">{{ $product->description }}</p>
 
                 <div class="detail-stock {{ $product->isLowStock() ? 'low' : '' }}">
-                    @if ($product->stock_qty > 10)
-                        ✅ In Stock ({{ $product->stock_qty }} available)
-                    @elseif ($product->stock_qty > 0)
-                        ⚠️ Low Stock — Only {{ $product->stock_qty }} left!
+                    @if ($totalStock > 10)
+                        ✅ In Stock ({{ $totalStock }} available)
+                    @elseif ($totalStock > 0)
+                        ⚠️ Low Stock — Only {{ $totalStock }} left!
                     @else
                         ❌ Out of Stock
                     @endif
                 </div>
 
-                @if ($product->stock_qty > 0)
+                @if ($totalStock > 0)
                     <form method="POST" action="{{ route('cart.add') }}" id="addToCartForm">
                         @csrf
                         <input type="hidden" name="variant_id" id="selectedVariantId" value="">
@@ -88,7 +91,7 @@
                             <div style="font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--light-grey);margin-bottom:12px;">Quantity</div>
                             <div style="display:flex;align-items:center;gap:12px;">
                                 <button type="button" onclick="changeQty(-1)" style="background:var(--dark);border:1px solid var(--border);color:var(--white);width:36px;height:36px;border-radius:4px;font-size:1.2rem;cursor:pointer;">−</button>
-                                <input type="number" name="quantity" id="qtyInput" value="1" min="1" max="{{ $product->stock_qty }}" class="form-control" style="width:70px;text-align:center;">
+                                <input type="number" name="quantity" id="qtyInput" value="1" min="1" max="{{ $totalStock }}" class="form-control" style="width:70px;text-align:center;">
                                 <button type="button" onclick="changeQty(1)" style="background:var(--dark);border:1px solid var(--border);color:var(--white);width:36px;height:36px;border-radius:4px;font-size:1.2rem;cursor:pointer;">+</button>
                             </div>
                         </div>
@@ -154,7 +157,7 @@ function selectColour(colour, btn) {
 
 function changeQty(delta) {
     const inp = document.getElementById('qtyInput');
-    inp.value = Math.max(1, Math.min({{ $product->stock_qty }}, parseInt(inp.value) + delta));
+    inp.value = Math.max(1, Math.min({{ $totalStock }}, parseInt(inp.value) + delta));
 }
 
 document.getElementById('addToCartForm')?.addEventListener('submit', function(e) {

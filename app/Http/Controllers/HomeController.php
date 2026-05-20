@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Collection;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $featured = collect();
+        $featured = Product::with(['category', 'variants', 'images'])
+            ->where('status', 'Active')
+            ->take(4)
+            ->get();
 
         return view('home', compact('featured'));
     }
