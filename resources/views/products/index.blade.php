@@ -43,6 +43,7 @@
         @if ($products->isNotEmpty())
             <div class="products-grid">
                 @foreach ($products as $p)
+                    @php $totalStock = $p->variants->sum('stock_qty'); @endphp
                     <div class="product-card">
                         <div class="product-img">
                             @php $img = $p->images->first(); @endphp
@@ -53,16 +54,19 @@
                             @else
                                 <div class="product-img-placeholder">👕</div>
                             @endif
-                            @if ($p->is_featured) <span class="product-badge">🔥 Hot</span> @endif
-                            @if ($p->isLowStock()) <span class="product-badge" style="background:var(--accent-2);top:auto;bottom:12px;">Low Stock</span> @endif
-                            @if ($p->stock_qty == 0) <span class="product-badge" style="background:#555;top:auto;bottom:12px;">Sold Out</span> @endif
+                            @if ($p->isLowStock() && $totalStock > 0)
+                                <span class="product-badge" style="background:var(--accent-2);top:auto;bottom:12px;">Low Stock</span>
+                            @endif
+                            @if ($totalStock == 0)
+                                <span class="product-badge" style="background:#555;top:auto;bottom:12px;">Sold Out</span>
+                            @endif
                         </div>
                         <div class="product-info">
                             <div class="product-cat">{{ $p->category->category_name }}</div>
                             <div class="product-name">{{ $p->product_name }}</div>
                             <div class="product-footer">
                                 <div class="product-price">RM <span>{{ number_format($p->base_price, 2) }}</span></div>
-                                @if ($p->stock_qty > 0)
+                                @if ($totalStock > 0)
                                     <a href="{{ route('products.show', $p->product_id) }}" class="quick-add">View →</a>
                                 @else
                                     <span style="color:var(--grey);font-size:0.72rem;font-weight:700;text-transform:uppercase;">Sold Out</span>
