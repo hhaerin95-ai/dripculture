@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         // DISABLE FK CHECKS (PostgreSQL)
         DB::statement('SET session_replication_role = replica;');
 
-        // CLEAR OLD DATA (children first)
+        // CLEAR OLD DATA
         DB::table('order_items')->delete();
         DB::table('orders')->delete();
         DB::table('cart')->delete();
