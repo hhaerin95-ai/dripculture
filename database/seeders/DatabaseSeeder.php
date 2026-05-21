@@ -9,28 +9,31 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
-{
-    // DISABLE FK CHECKS (PostgreSQL)
-    DB::statement('SET session_replication_role = replica;');
+    {
+        // DISABLE FK CHECKS (PostgreSQL)
+        DB::statement('SET session_replication_role = replica;');
 
-    // CLEAR OLD DATA
-    DB::table('cart')->delete();
-    DB::table('variants')->delete();
-    DB::table('images')->delete();
-    DB::table('products')->delete();
-    DB::table('categories')->delete();
-    DB::table('users')->delete();
-    DB::table('roles')->delete();
+        // CLEAR OLD DATA (children first)
+        DB::table('order_items')->delete();
+        DB::table('orders')->delete();
+        DB::table('cart')->delete();
+        DB::table('variants')->delete();
+        DB::table('images')->delete();
+        DB::table('products')->delete();
+        DB::table('categories')->delete();
+        DB::table('users')->delete();
+        DB::table('roles')->delete();
 
-    // RE-ENABLE FK CHECKS
-    DB::statement('SET session_replication_role = DEFAULT;');
+        // RE-ENABLE FK CHECKS
+        DB::statement('SET session_replication_role = DEFAULT;');
+
         // ROLES
         DB::table('roles')->insert([
             ['role_id' => 1, 'role_name' => 'Admin'],
             ['role_id' => 2, 'role_name' => 'Customer'],
         ]);
 
-        // CATEGORIES — capture real IDs
+        // CATEGORIES
         $tshirtId = DB::table('categories')->insertGetId([
             'category_name' => 'T-Shirts',
             'description'   => 'Graphic and plain tees',
@@ -61,7 +64,7 @@ class DatabaseSeeder extends Seeder
             'created_at'    => now(),
         ], 'category_id');
 
-        // PRODUCTS — capture real IDs
+        // PRODUCTS
         $p1 = DB::table('products')->insertGetId([
             'category_id'  => $tshirtId,
             'product_name' => 'OG Box Logo Tee',
@@ -107,7 +110,7 @@ class DatabaseSeeder extends Seeder
             'created_at'   => now(),
         ], 'product_id');
 
-        // VARIANTS — using real product IDs
+        // VARIANTS
         $variants = [
             [$p1, 'S',        'Black', 0],
             [$p1, 'M',        'Black', 0],
