@@ -9,16 +9,21 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
-    {
-        // CLEAR OLD DATA (children first)
-        DB::table('cart')->delete();
-        DB::table('variants')->delete();
-        DB::table('images')->delete();
-        DB::table('products')->delete();
-        DB::table('categories')->delete();
-        DB::table('users')->delete();
-        DB::table('roles')->delete();
+{
+    // DISABLE FK CHECKS (PostgreSQL)
+    DB::statement('SET session_replication_role = replica;');
 
+    // CLEAR OLD DATA
+    DB::table('cart')->delete();
+    DB::table('variants')->delete();
+    DB::table('images')->delete();
+    DB::table('products')->delete();
+    DB::table('categories')->delete();
+    DB::table('users')->delete();
+    DB::table('roles')->delete();
+
+    // RE-ENABLE FK CHECKS
+    DB::statement('SET session_replication_role = DEFAULT;');
         // ROLES
         DB::table('roles')->insert([
             ['role_id' => 1, 'role_name' => 'Admin'],
