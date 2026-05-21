@@ -10,9 +10,6 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // DISABLE FK CHECKS (PostgreSQL)
-        DB::statement('SET session_replication_role = replica;');
-
         // CLEAR OLD DATA
         DB::table('order_items')->delete();
         DB::table('orders')->delete();
@@ -23,9 +20,6 @@ class DatabaseSeeder extends Seeder
         DB::table('categories')->delete();
         DB::table('users')->delete();
         DB::table('roles')->delete();
-
-        // RE-ENABLE FK CHECKS
-        DB::statement('SET session_replication_role = DEFAULT;');
 
         // ROLES
         DB::table('roles')->insert([
